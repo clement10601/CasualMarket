@@ -262,6 +262,7 @@ MCP Server 支援以下環境變數：
 ## Docker 部署
 
 除了 stdio 模式外，CasualMarket 也支援透過 Docker 容器化部署，並提供 SSE (Server-Sent Events) 與 Streamable HTTP 介面。
+**Docker 預設啟動為 Streamable HTTP（`/mcp`）**；若需要 SSE，請使用下方 SSE 啟動方式。
 
 ### 快速啟動
 
@@ -325,6 +326,27 @@ python -m src.http_server
 
 ```bash
 casual-market-mcp-http
+```
+
+### SSE 啟動方式
+
+如需 SSE 介面，改用以下入口點：
+
+```bash
+python -m src.sse_server
+```
+
+### Streamable HTTP MCP 設定範例
+
+```json
+{
+  "mcpServers": {
+    "casualmarket": {
+      "type": "streamable-http",
+      "url": "http://localhost:8000/mcp"
+    }
+  }
+}
 ```
 
 ### SSE 客戶端範例
