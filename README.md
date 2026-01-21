@@ -10,7 +10,8 @@
 ## 部署模式
 
 ✅ **stdio 模式**: 本地開發與 Claude Desktop 整合  
-✅ **Docker + SSE 模式**: 容器化部署，HTTP 介面訪問
+✅ **Docker + SSE 模式**: 容器化部署，HTTP 介面訪問  
+✅ **Streamable HTTP 模式**: HTTP Streaming 端點 `/mcp`
 
 ## 目錄
 
@@ -260,7 +261,7 @@ MCP Server 支援以下環境變數：
 
 ## Docker 部署
 
-除了 stdio 模式外，CasualMarket 也支援透過 Docker 容器化部署，並提供 SSE (Server-Sent Events) HTTP 介面。
+除了 stdio 模式外，CasualMarket 也支援透過 Docker 容器化部署，並提供 SSE (Server-Sent Events) 與 Streamable HTTP 介面。
 
 ### 快速啟動
 
@@ -309,7 +310,22 @@ docker-compose down
 - **根端點**: `http://localhost:8000/` - 服務資訊
 - **健康檢查**: `http://localhost:8000/health` - 服務狀態
 - **SSE 端點**: `http://localhost:8000/sse` - MCP 協議通訊（POST）
+- **Streamable HTTP 端點**: `http://localhost:8000/mcp` - MCP Streamable HTTP
 - **API 文檔**: `http://localhost:8000/docs` - FastAPI 自動生成文檔
+
+### Streamable HTTP 啟動方式
+
+使用 Streamable HTTP 入口點：
+
+```bash
+python -m src.http_server
+```
+
+或透過安裝後指令：
+
+```bash
+casual-market-mcp-http
+```
 
 ### SSE 客戶端範例
 

@@ -122,7 +122,7 @@ async def get_taiwan_stock_price(symbol: str):
 
 
 @mcp.tool
-async def buy_taiwan_stock(symbol: str, quantity: int, price: float | None = None):
+async def buy_taiwan_stock(symbol: str, quantity: int, price: float = 0.0):
     """
     模擬台灣股票買入操作。
 
@@ -136,7 +136,7 @@ async def buy_taiwan_stock(symbol: str, quantity: int, price: float | None = Non
     Args:
         symbol: 股票代碼 (例如: "2330")
         quantity: 購買股數，必須是1000的倍數 (台股最小單位為1000股)
-        price: 指定價格 (可選，不指定則為市價)
+        price: 指定價格 (可選，不指定或 <= 0 則為市價)
 
     Returns:
         MCPToolResponse[TradingResultData]: 統一格式的回應，包含：
@@ -161,14 +161,20 @@ async def buy_taiwan_stock(symbol: str, quantity: int, price: float | None = Non
         - 指定價格超出漲跌停限制
         - 模擬交易系統異常
     """
+    normalized_price = price if price and price > 0 else None
     logger.info(
-        f"工具調用: buy_taiwan_stock, 參數: symbol={symbol}, quantity={quantity}, price={price}"
+        "工具調用: buy_taiwan_stock, 參數: "
+        f"symbol={symbol}, quantity={quantity}, price={normalized_price}"
     )
-    return await stock_trading_tool.buy(symbol=symbol, quantity=quantity, price=price)
+    return await stock_trading_tool.buy(
+        symbol=symbol,
+        quantity=quantity,
+        price=normalized_price,
+    )
 
 
 @mcp.tool
-async def sell_taiwan_stock(symbol: str, quantity: int, price: float | None = None):
+async def sell_taiwan_stock(symbol: str, quantity: int, price: float = 0.0):
     """
     模擬台灣股票賣出操作。
 
@@ -182,7 +188,7 @@ async def sell_taiwan_stock(symbol: str, quantity: int, price: float | None = No
     Args:
         symbol: 股票代碼 (例如: "2330")
         quantity: 賣出股數，必須是1000的倍數 (台股最小單位為1000股)
-        price: 指定價格 (可選，不指定則為市價)
+        price: 指定價格 (可選，不指定或 <= 0 則為市價)
 
     Returns:
         MCPToolResponse[TradingResultData]: 統一格式的回應，包含：
@@ -207,10 +213,16 @@ async def sell_taiwan_stock(symbol: str, quantity: int, price: float | None = No
         - 指定價格超出漲跌停限制
         - 模擬交易系統異常
     """
+    normalized_price = price if price and price > 0 else None
     logger.info(
-        f"工具調用: sell_taiwan_stock, 參數: symbol={symbol}, quantity={quantity}, price={price}"
+        "工具調用: sell_taiwan_stock, 參數: "
+        f"symbol={symbol}, quantity={quantity}, price={normalized_price}"
     )
-    return await stock_trading_tool.sell(symbol=symbol, quantity=quantity, price=price)
+    return await stock_trading_tool.sell(
+        symbol=symbol,
+        quantity=quantity,
+        price=normalized_price,
+    )
 
 
 @mcp.tool

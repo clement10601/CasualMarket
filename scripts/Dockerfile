@@ -48,5 +48,5 @@ EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD python -c "import socket; socket.create_connection(('127.0.0.1', 8000), timeout=2)" || exit 1
 
-# Run the SSE server by default
-CMD ["python", "-m", "src.sse_server"]
+# Run the streamable HTTP server by default
+CMD ["python", "-m", "src.http_server"]
